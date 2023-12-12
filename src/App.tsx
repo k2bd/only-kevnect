@@ -7,7 +7,7 @@ import Timer from './components/Timer';
 import Wall from './components/Wall';
 import { PUZZLE_TIME_LIMIT_SECONDS } from './constants';
 import { PuzzleProvider, usePuzzle } from './contexts/Puzzle';
-import { Instructions, PuzzleContainer, Title } from './style';
+import { HeaderContainer, Instructions, PuzzleContainer, Title } from './style';
 
 const AppContent: React.FC = () => {
   const { fetchPuzzle, completedGroups, puzzle, lives, error } = usePuzzle();
@@ -71,14 +71,18 @@ const AppContent: React.FC = () => {
         </>
       )}
       {showPuzzle && (
-        <PuzzleContainer>
-          <Timer
-            duration={PUZZLE_TIME_LIMIT_SECONDS}
-            timeRemaining={countdown}
-          />
-          <LivesDisplay />
-          <Wall />
-        </PuzzleContainer>
+        <>
+          <HeaderContainer>
+            <Timer
+              duration={PUZZLE_TIME_LIMIT_SECONDS}
+              timeRemaining={countdown}
+            />
+            <LivesDisplay />
+          </HeaderContainer>
+          <PuzzleContainer>
+            <Wall />
+          </PuzzleContainer>
+        </>
       )}
       <GameSummaryModal
         isOpen={showModal}

@@ -5,15 +5,24 @@ import Modal from 'react-modal';
 import styled from 'styled-components';
 
 export const WallContainer = styled.div`
-  background-color: #0c3c60; // A dark blue background
-  padding: 20px;
+  background-color: #0c3c60;
+  padding: 10px; // Reduced padding
+  width: 100%; // Use percentage for responsiveness
   max-width: 800px;
-  margin: 30px auto;
+  margin: 20px auto; // Reduced margin
   border-radius: 8px;
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 15px;
+  gap: 10px; // Smaller gap
+
+  @media (max-width: 600px) {
+    grid-template-columns: repeat(2, 1fr); // 2 columns for smaller screens
+  }
+
+  @media (max-width: 800px) {
+    max-width: 95%;
+  }
 `;
 
 export const Tile = styled.button<{
@@ -26,9 +35,9 @@ export const Tile = styled.button<{
       : 'linear-gradient(to bottom, #6db3f2, #1e69de)'};
   border: 2px solid ${(props) => (props.$isSelected ? '#FFD700' : '#0a2558')};
   color: #ffffff;
-  padding: 15px;
+  padding: 15px 20px;
   font-family: 'Times New Roman', serif;
-  font-size: 20px;
+  font-size: 16px;
   cursor: pointer;
   transition:
     transform 0.1s ease-in-out,
@@ -119,14 +128,15 @@ export const CompletedTile = styled.div`
 `;
 
 export const CompletedGroupsContainer = styled.div`
-  margin-top: 20px; // Space between the puzzle and the completed groups
+  margin-top: 10px; // Space between the puzzle and the completed groups
 `;
 
 export const GroupTitle = styled.h2`
   color: #333;
   text-align: center;
   font-size: 1rem; // Reduced font size for conciseness
-  margin: 10px 0; // Reduced margin for a more concise layout
+  margin-top: 5px;
+  margin-bottom: 0px;
 `;
 
 export const DatePickerContainer = styled.div`
@@ -168,14 +178,20 @@ export const StyledModal = styled(Modal)`
   background: white;
   padding: 20px;
   border-radius: 10px;
-  width: 80%;
-  max-width: 500px;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   outline: none;
+  width: 90%; // More responsive
+  max-width: 500px;
+  max-height: 90vh; // Prevents overflow on small screens
+  overflow-y: auto; // Allows scrolling within the modal
+
+  @media (max-width: 600px) {
+    max-width: 95%;
+  }
 `;
 
 export const ModalContent = styled.div`
@@ -223,21 +239,20 @@ export const Instructions = styled.p`
   margin-bottom: 30px; // Space between instructions and date selector
 `;
 
-export const PuzzleContainer = styled.div`
-  max-width: 800px; // Adjust this width to match your puzzle board width
-  margin: auto; // Center align the container
-`;
-
 export const PipContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 10px;
+
+  @media (max-width: 600px) {
+    padding: 5px;
+  }
 `;
 
 export const Pip = styled.div<{ $alive: boolean; $active: boolean }>`
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background-color: ${({ $alive }) => ($alive ? '#4caf50' : '#ddd')};
   margin: 0 5px;
@@ -248,7 +263,6 @@ export const Pip = styled.div<{ $alive: boolean; $active: boolean }>`
 export const TimerContainer = styled.div`
   width: 100%; // Full width of the container
   height: 10px; // Height of the timer bar
-  background-color: #ddd; // Background color of the timer
   border-radius: 5px;
   overflow: hidden;
 `;
@@ -258,4 +272,25 @@ export const TimeElapsed = styled.div<{ width: number }>`
   background-color: #4caf50; // Color of the elapsed time
   width: ${({ width }) => width}%;
   transition: width 0.2s linear; // Smooth transition for the timer
+`;
+
+export const HeaderContainer = styled.div`
+  position: sticky; // Use sticky positioning
+  top: 0; // Stick to the top of the viewport
+  left: 0;
+  height: 30px;
+  background-color: #fff;
+  z-index: 1; // Ensure the header is above the puzzle
+`;
+
+export const PuzzleContainer = styled.div`
+  max-width: 800px; // Adjust this width to match your puzzle board width
+  margin: auto; // Center align the container
+  display: flex;
+  justify-content: center; // Ensures content inside is also centered
+  align-items: center; // Vertical alignment if needed
+
+  @media (max-width: 800px) {
+    max-width: 95%;
+  }
 `;
