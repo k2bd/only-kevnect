@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { MINIMUM_SELECTABLE_DATE } from '../../constants';
 import {
@@ -19,7 +19,13 @@ const DateSelector: React.FC<DateSelectorProps> = ({
   isLoading
 }: DateSelectorProps) => {
   const today = new Date();
-  const [highlightedDate, setHighlightedDate] = useState<Date | null>(today);
+  const [highlightedDate, setHighlightedDate] = useState<Date | null>(null);
+
+  useEffect(() => {
+    if (highlightedDate === null) {
+      onChange(today);
+    }
+  }, [highlightedDate, today]);
 
   const onChange = (date: Date | null) => {
     setHighlightedDate(date);
