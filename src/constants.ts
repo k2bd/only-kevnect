@@ -1,1 +1,2 @@
 export const PUZZLE_TIME_LIMIT_SECONDS = 60;
+export const PUZZLE_LAST_GROUP_LIVES = 3;

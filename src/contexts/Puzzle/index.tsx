@@ -1,10 +1,12 @@
 // PuzzleContext.tsx
 import { createContext, ReactNode, useContext, useState } from 'react';
 
+import { PUZZLE_LAST_GROUP_LIVES } from '../../constants';
 import { Puzzle } from '../../type';
 
 interface PuzzleContextProps {
   puzzle?: Puzzle;
+  lives: number;
   completedGroups: string[];
   guesses: string[][];
   submitGuess: (guess: string[]) => boolean;
@@ -13,6 +15,7 @@ interface PuzzleContextProps {
 
 const defaultState: PuzzleContextProps = {
   puzzle: undefined,
+  lives: 0,
   completedGroups: [],
   guesses: [],
   submitGuess: () => false,
@@ -29,6 +32,11 @@ export const PuzzleProvider = ({ children }: PuzzleProviderProps) => {
   const [puzzle, setPuzzle] = useState<Puzzle | undefined>();
   const [completedGroups, setCompletedGroups] = useState<string[]>([]);
   const [guesses, setGuesses] = useState<string[][]>([]);
+  const [lives, setLives] = useState(PUZZLE_LAST_GROUP_LIVES);
+
+  const loseLife = () => {
+    setLives((prevLives) => prevLives - 1);
+  };
 
   const fetchPuzzle = async (date: string) => {
     // Check if in development mode
@@ -98,12 +106,23 @@ export const PuzzleProvider = ({ children }: PuzzleProviderProps) => {
       return true; // The guess is correct
     }
 
+    if (completedGroups.length === 2) {
+      loseLife();
+    }
+
     return false; // The guess is incorrect
   };
 
   return (
     <PuzzleContext.Provider
-      value={{ puzzle, completedGroups, guesses, submitGuess, fetchPuzzle }}
+      value={{
+        puzzle,
+        completedGroups,
+        guesses,
+        lives,
+        submitGuess,
+        fetchPuzzle
+      }}
     >
       {children}
     </PuzzleContext.Provider>

@@ -3,25 +3,20 @@ import Modal from 'react-modal';
 
 import copyToClipboard from '../../clipboard';
 import { PUZZLE_TIME_LIMIT_SECONDS } from '../../constants';
-import { Puzzle } from '../../type';
+import { usePuzzle } from '../../contexts/Puzzle';
 
 interface GameSummaryModalProps {
   isOpen: boolean;
   onRequestClose: () => void;
-  completedGroups: string[];
-  guesses: string[][];
   timeRemaining: number;
-  puzzle?: Puzzle;
 }
 
 const GameSummaryModal: React.FC<GameSummaryModalProps> = ({
   isOpen,
   onRequestClose,
-  completedGroups,
-  guesses,
-  timeRemaining,
-  puzzle
+  timeRemaining
 }) => {
+  const { puzzle, guesses, completedGroups } = usePuzzle();
   const [activeTab, setActiveTab] = useState<'summary' | 'details'>('summary');
 
   const levelToEmoji = (level: number): string => {

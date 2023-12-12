@@ -3,6 +3,7 @@ import { styled } from 'styled-components';
 
 import DateSelector from './components/DateSelector';
 import GameSummaryModal from './components/GameSummaryModal';
+import LivesDisplay from './components/LivesDisplay';
 import Timer from './components/Timer';
 import Wall from './components/Wall';
 import { PUZZLE_TIME_LIMIT_SECONDS } from './constants';
@@ -14,7 +15,7 @@ const PuzzleContainer = styled.div`
 `;
 
 const AppContent: React.FC = () => {
-  const { fetchPuzzle, completedGroups, puzzle, guesses } = usePuzzle();
+  const { fetchPuzzle, completedGroups, puzzle, lives } = usePuzzle();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showPuzzle, setShowPuzzle] = useState<boolean>(false);
   const [isTimerActive, setIsTimerActive] = useState<boolean>(false);
@@ -36,7 +37,8 @@ const AppContent: React.FC = () => {
     if (
       (puzzle &&
         completedGroups.length === Object.keys(puzzle?.groups ?? {}).length) ||
-      countdown === 0
+      countdown === 0 ||
+      (puzzle && lives === 0)
     ) {
       setShowModal(true);
       setIsTimerActive(false); // Stop the timer
@@ -62,16 +64,14 @@ const AppContent: React.FC = () => {
             duration={PUZZLE_TIME_LIMIT_SECONDS}
             timeRemaining={countdown}
           />
+          <LivesDisplay />
           <Wall />
         </PuzzleContainer>
       )}
       <GameSummaryModal
         isOpen={showModal}
         onRequestClose={() => setShowModal(false)}
-        completedGroups={completedGroups}
-        guesses={guesses}
         timeRemaining={countdown}
-        puzzle={puzzle}
       />
     </div>
   );
