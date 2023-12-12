@@ -1,0 +1,26 @@
+name: Fetch Daily Puzzle
+
+on:
+  schedule:
+    - cron: "0 0 * * *" # Runs every day at midnight UTC
+
+jobs:
+  fetch-and-commit-puzzle:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Fetch Puzzle Data
+        run: |
+          DATE=$(date +%Y-%m-%d)
+          curl -o puzzles/${DATE}.json https://www.nytimes.com/svc/connections/v1/${DATE}.json
+
+      - name: Commit and Push
+        run: |
+          git config --global user.name 'Your Name'
+          git config --global user.email 'your-email@example.com'
+          git add puzzles/
+          git commit -m "Update daily puzzle for ${DATE}"
+          git push

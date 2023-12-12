@@ -1,0 +1,1 @@
+export const PUZZLE_TIME_LIMIT_SECONDS = 60;

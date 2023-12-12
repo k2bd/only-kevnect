@@ -1,26 +1,88 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from 'react';
+import { styled } from 'styled-components';
 
-function App() {
+import DateSelector from './components/DateSelector';
+import GameSummaryModal from './components/GameSummaryModal';
+import Timer from './components/Timer';
+import Wall from './components/Wall';
+import { PUZZLE_TIME_LIMIT_SECONDS } from './constants';
+import { PuzzleProvider, usePuzzle } from './contexts/Puzzle';
+
+const PuzzleContainer = styled.div`
+  max-width: 800px; // Adjust this width to match your puzzle board width
+  margin: auto; // Center align the container
+`;
+
+const AppContent: React.FC = () => {
+  const { fetchPuzzle, completedGroups, puzzle, guesses } = usePuzzle();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [showPuzzle, setShowPuzzle] = useState<boolean>(false);
+  const [isTimerActive, setIsTimerActive] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [countdown, setCountdown] = useState<number>(PUZZLE_TIME_LIMIT_SECONDS);
+
+  const handleDateChange = (date: Date) => {
+    setIsLoading(true);
+    setShowPuzzle(false);
+    fetchPuzzle(date.toISOString().split('T')[0]).finally(() => {
+      setIsLoading(false);
+      setShowPuzzle(true);
+      setIsTimerActive(true);
+    });
+  };
+
+  useEffect(() => {
+    // Check if all groups are completed or timer ends
+    if (
+      (puzzle &&
+        completedGroups.length === Object.keys(puzzle?.groups ?? {}).length) ||
+      countdown === 0
+    ) {
+      setShowModal(true);
+      setIsTimerActive(false); // Stop the timer
+    }
+  }, [completedGroups, puzzle, countdown]);
+
+  // Timer countdown logic
+  useEffect(() => {
+    if (isTimerActive && countdown > 0) {
+      const timerId = setTimeout(() => setCountdown(countdown - 1), 1000);
+      return () => clearTimeout(timerId);
+    }
+  }, [isTimerActive, countdown]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {!showPuzzle && (
+        <DateSelector onDateChange={handleDateChange} isLoading={isLoading} />
+      )}
+      {showPuzzle && (
+        <PuzzleContainer>
+          <Timer
+            duration={PUZZLE_TIME_LIMIT_SECONDS}
+            timeRemaining={countdown}
+          />
+          <Wall />
+        </PuzzleContainer>
+      )}
+      <GameSummaryModal
+        isOpen={showModal}
+        onRequestClose={() => setShowModal(false)}
+        completedGroups={completedGroups}
+        guesses={guesses}
+        timeRemaining={countdown}
+        puzzle={puzzle}
+      />
     </div>
   );
-}
+};
+
+const App: React.FC = () => {
+  return (
+    <PuzzleProvider>
+      <AppContent />
+    </PuzzleProvider>
+  );
+};
 
 export default App;
