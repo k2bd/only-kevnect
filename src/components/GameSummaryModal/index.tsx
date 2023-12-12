@@ -1,9 +1,15 @@
-import React, { useState } from 'react';
-import Modal from 'react-modal';
+import { useState } from 'react';
 
 import copyToClipboard from '../../clipboard';
 import { PUZZLE_TIME_LIMIT_SECONDS } from '../../constants';
 import { usePuzzle } from '../../contexts/Puzzle';
+import {
+  BackgroundBlur,
+  ModalBody,
+  ModalContent,
+  ModalHeader,
+  StyledModal
+} from '../../style';
 
 interface GameSummaryModalProps {
   isOpen: boolean;
@@ -15,7 +21,7 @@ const GameSummaryModal: React.FC<GameSummaryModalProps> = ({
   isOpen,
   onRequestClose,
   timeRemaining
-}) => {
+}: GameSummaryModalProps) => {
   const { puzzle, guesses, completedGroups } = usePuzzle();
   const [activeTab, setActiveTab] = useState<'summary' | 'details'>('summary');
 
@@ -102,15 +108,23 @@ ${guesses
     );
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onRequestClose={onRequestClose}
-      appElement={document.getElementById('root') as HTMLElement}
-    >
-      <button onClick={() => setActiveTab('summary')}>Summary</button>
-      <button onClick={() => setActiveTab('details')}>Details</button>
-      {modalContent}
-    </Modal>
+    <>
+      {isOpen && <BackgroundBlur />}
+      <StyledModal
+        isOpen={isOpen}
+        onRequestClose={onRequestClose}
+        appElement={document.getElementById('root') as HTMLElement}
+      >
+        <ModalContent>
+          <ModalHeader>Game Summary</ModalHeader>
+          <ModalBody>
+            <button onClick={() => setActiveTab('summary')}>Summary</button>
+            <button onClick={() => setActiveTab('details')}>Details</button>
+            {modalContent}
+          </ModalBody>
+        </ModalContent>
+      </StyledModal>
+    </>
   );
 };
 

@@ -1,3 +1,7 @@
+import 'react-datepicker/dist/react-datepicker.css';
+
+import DatePicker from 'react-datepicker';
+import Modal from 'react-modal';
 import styled from 'styled-components';
 
 export const WallContainer = styled.div`
@@ -123,4 +127,84 @@ export const GroupTitle = styled.h2`
   text-align: center;
   font-size: 1rem; // Reduced font size for conciseness
   margin: 10px 0; // Reduced margin for a more concise layout
+`;
+
+export const DatePickerContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px; // Adjust as needed
+`;
+
+export const StyledDatePicker = styled(DatePicker)`
+  padding: 10px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  // Additional styles for react-datepicker
+`;
+
+export const StyledButton = styled.button`
+  padding: 10px 20px;
+  border: none;
+  background-color: #4caf50;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+
+  &:hover {
+    background-color: #45a049;
+  }
+
+  &:disabled {
+    background-color: #ccc;
+    cursor: default;
+  }
+`;
+
+export const StyledModal = styled(Modal)`
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 500px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  outline: none;
+`;
+
+export const ModalContent = styled.div`
+  padding: 20px; // Padding inside the modal
+  display: flex;
+  flex-direction: column; // Stack children vertically
+  align-items: center; // Align children in the center
+  justify-content: center; // Center content vertically
+`;
+
+export const ModalHeader = styled.h2`
+  font-size: 1.5em; // Adjust size as needed
+  text-align: center;
+  color: #333; // Dark text color for contrast
+  margin-bottom: 20px; // Space between header and body
+`;
+
+export const ModalBody = styled.div`
+  font-size: 1em; // Standard text size
+  color: #555; // Slightly lighter text color for the body
+  line-height: 1.6; // Space between lines for better readability
+  text-align: center; // Center align the content
+`;
+
+export const BackgroundBlur = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  backdrop-filter: blur(5px); // Adjust the blur effect as needed
 `;

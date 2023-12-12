@@ -1,7 +1,10 @@
-import 'react-datepicker/dist/react-datepicker.css';
+import { useState } from 'react';
 
-import React, { useState } from 'react';
-import DatePicker from 'react-datepicker';
+import {
+  DatePickerContainer,
+  StyledButton,
+  StyledDatePicker
+} from '../../style';
 
 interface DateSelectorProps {
   onDateChange: (date: Date) => void;
@@ -11,19 +14,22 @@ interface DateSelectorProps {
 const DateSelector: React.FC<DateSelectorProps> = ({
   onDateChange,
   isLoading
-}) => {
+}: DateSelectorProps) => {
   const [highlightedDate, setHighlightedDate] = useState<Date | null>(null);
 
   return (
-    <div>
-      <DatePicker selected={highlightedDate} onChange={setHighlightedDate} />
-      <button
+    <DatePickerContainer>
+      <StyledDatePicker
+        selected={highlightedDate}
+        onChange={setHighlightedDate}
+      />
+      <StyledButton
         onClick={() => highlightedDate && onDateChange(highlightedDate)}
         disabled={isLoading || !highlightedDate}
       >
         Start
-      </button>
-    </div>
+      </StyledButton>
+    </DatePickerContainer>
   );
 };
 
