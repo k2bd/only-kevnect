@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/only-kevnect/static/css/main.3e8ccca2.css",
+    "main.js": "/only-kevnect/static/js/main.f3435e98.js",
+    "static/js/787.e23ba36a.chunk.js": "/only-kevnect/static/js/787.e23ba36a.chunk.js",
+    "index.html": "/only-kevnect/index.html",
+    "main.3e8ccca2.css.map": "/only-kevnect/static/css/main.3e8ccca2.css.map",
+    "main.f3435e98.js.map": "/only-kevnect/static/js/main.f3435e98.js.map",
+    "787.e23ba36a.chunk.js.map": "/only-kevnect/static/js/787.e23ba36a.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.3e8ccca2.css",
+    "static/js/main.f3435e98.js"
+  ]
+}
