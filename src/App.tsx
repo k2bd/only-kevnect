@@ -49,7 +49,7 @@ const AppContent: React.FC = () => {
       setShowModal(true);
       setIsTimerActive(false); // Stop the timer
     }
-  }, [completedGroups, puzzle, countdown]);
+  }, [completedGroups, puzzle, countdown, lives]);
 
   // Timer countdown logic
   useEffect(() => {
