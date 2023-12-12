@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { styled } from 'styled-components';
 
 import DateSelector from './components/DateSelector';
 import GameSummaryModal from './components/GameSummaryModal';
@@ -8,12 +7,7 @@ import Timer from './components/Timer';
 import Wall from './components/Wall';
 import { PUZZLE_TIME_LIMIT_SECONDS } from './constants';
 import { PuzzleProvider, usePuzzle } from './contexts/Puzzle';
-import { Instructions, Title } from './style';
-
-const PuzzleContainer = styled.div`
-  max-width: 800px; // Adjust this width to match your puzzle board width
-  margin: auto; // Center align the container
-`;
+import { Instructions, PuzzleContainer, Title } from './style';
 
 const AppContent: React.FC = () => {
   const { fetchPuzzle, completedGroups, puzzle, lives, error } = usePuzzle();

@@ -222,3 +222,40 @@ export const Instructions = styled.p`
   color: #34495e; // Slightly lighter color for instructions
   margin-bottom: 30px; // Space between instructions and date selector
 `;
+
+export const PuzzleContainer = styled.div`
+  max-width: 800px; // Adjust this width to match your puzzle board width
+  margin: auto; // Center align the container
+`;
+
+export const PipContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+`;
+
+export const Pip = styled.div<{ $alive: boolean; $active: boolean }>`
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: ${({ $alive }) => ($alive ? '#4caf50' : '#ddd')};
+  margin: 0 5px;
+  opacity: ${({ $active }) => ($active ? 1 : 0)};
+  transition: opacity 0.3s ease;
+`;
+
+export const TimerContainer = styled.div`
+  width: 100%; // Full width of the container
+  height: 10px; // Height of the timer bar
+  background-color: #ddd; // Background color of the timer
+  border-radius: 5px;
+  overflow: hidden;
+`;
+
+export const TimeElapsed = styled.div<{ width: number }>`
+  height: 100%;
+  background-color: #4caf50; // Color of the elapsed time
+  width: ${({ width }) => width}%;
+  transition: width 0.2s linear; // Smooth transition for the timer
+`;
