@@ -1,5 +1,11 @@
 // PuzzleContext.tsx
-import { createContext, ReactNode, useContext, useState } from 'react';
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState
+} from 'react';
 
 import { PUZZLE_LAST_GROUP_LIVES } from '../../constants';
 import { Puzzle } from '../../type';
@@ -80,6 +86,21 @@ export const PuzzleProvider = ({ children }: PuzzleProviderProps) => {
       console.error('Failed to fetch puzzle', error);
     }
   };
+
+  useEffect(() => {
+    if (!puzzle) return;
+
+    // Auto-complete the puzzle if all groups are completed
+    if (completedGroups.length === 3) {
+      const groupNames = Object.keys(puzzle.groups);
+      const remainingGroup = groupNames.find(
+        (groupName) => !completedGroups.includes(groupName)
+      );
+      if (remainingGroup) {
+        markGroupAsCompleted(remainingGroup);
+      }
+    }
+  }, [completedGroups, puzzle]);
 
   const markGroupAsCompleted = (groupName: string) => {
     if (!completedGroups.includes(groupName)) {
