@@ -2,21 +2,25 @@ name: Fetch Daily Puzzle
 
 on:
   schedule:
-    - cron: "5 0 * * *" # Runs every day at midnight UTC
+    - cron: "1 0 * * *" # Runs every day at 1 minute past midnight UTC
   workflow_dispatch:
 
 jobs:
   fetch-and-commit-puzzle:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Fetch Puzzle Data
         run: |
           DATE=$(date +%Y-%m-%d)
           curl -o puzzles/${DATE}.json https://www.nytimes.com/svc/connections/v1/${DATE}.json
+          echo "Puzzle content: $(cat puzzles/${DATE}.json)"
 
       - name: Commit and Push
         run: |
