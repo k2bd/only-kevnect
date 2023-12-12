@@ -208,3 +208,17 @@ export const BackgroundBlur = styled.div`
   bottom: 0;
   backdrop-filter: blur(5px); // Adjust the blur effect as needed
 `;
+
+export const Title = styled.h1`
+  font-size: 2em;
+  text-align: center;
+  color: #2c3e50; // Dark color for the title
+  margin-bottom: 20px; // Space between title and instructions
+`;
+
+export const Instructions = styled.p`
+  font-size: 1em;
+  text-align: center;
+  color: #34495e; // Slightly lighter color for instructions
+  margin-bottom: 30px; // Space between instructions and date selector
+`;

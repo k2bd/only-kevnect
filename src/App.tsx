@@ -8,6 +8,7 @@ import Timer from './components/Timer';
 import Wall from './components/Wall';
 import { PUZZLE_TIME_LIMIT_SECONDS } from './constants';
 import { PuzzleProvider, usePuzzle } from './contexts/Puzzle';
+import { Instructions, Title } from './style';
 
 const PuzzleContainer = styled.div`
   max-width: 800px; // Adjust this width to match your puzzle board width
@@ -53,10 +54,17 @@ const AppContent: React.FC = () => {
     }
   }, [isTimerActive, countdown]);
 
+  const instructionText =
+    "Press start and you'll have one minute to solve the wall. When you're down to two groups, you have three lives.";
+
   return (
     <div>
       {!showPuzzle && (
-        <DateSelector onDateChange={handleDateChange} isLoading={isLoading} />
+        <>
+          <Title>Only Kevnect</Title>
+          <Instructions>{instructionText}</Instructions>
+          <DateSelector onDateChange={handleDateChange} isLoading={isLoading} />
+        </>
       )}
       {showPuzzle && (
         <PuzzleContainer>
