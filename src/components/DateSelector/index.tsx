@@ -9,27 +9,36 @@ import {
 
 interface DateSelectorProps {
   onDateChange: (date: Date) => void;
+  onDateSelect: (date: Date) => void;
   isLoading: boolean;
 }
 
 const DateSelector: React.FC<DateSelectorProps> = ({
   onDateChange,
+  onDateSelect,
   isLoading
 }: DateSelectorProps) => {
   const today = new Date();
   const [highlightedDate, setHighlightedDate] = useState<Date | null>(today);
 
+  const onChange = (date: Date | null) => {
+    setHighlightedDate(date);
+    if (date) {
+      onDateChange(date);
+    }
+  };
+
   return (
     <DatePickerContainer>
       <StyledDatePicker
         selected={highlightedDate}
-        onChange={setHighlightedDate}
+        onChange={onChange}
         minDate={MINIMUM_SELECTABLE_DATE}
         maxDate={today}
         disabled={isLoading}
       />
       <StyledButton
-        onClick={() => highlightedDate && onDateChange(highlightedDate)}
+        onClick={() => highlightedDate && onDateSelect(highlightedDate)}
         disabled={isLoading || !highlightedDate}
       >
         Start

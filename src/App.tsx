@@ -28,9 +28,14 @@ const AppContent: React.FC = () => {
     setShowPuzzle(false);
     fetchPuzzle(date.toISOString().split('T')[0]).finally(() => {
       setIsLoading(false);
+    });
+  };
+
+  const handleDateSelect = () => {
+    if (puzzle) {
       setShowPuzzle(true);
       setIsTimerActive(true);
-    });
+    }
   };
 
   useEffect(() => {
@@ -63,7 +68,11 @@ const AppContent: React.FC = () => {
         <>
           <Title>Only Kevnect</Title>
           <Instructions>{instructionText}</Instructions>
-          <DateSelector onDateChange={handleDateChange} isLoading={isLoading} />
+          <DateSelector
+            onDateChange={handleDateChange}
+            onDateSelect={handleDateSelect}
+            isLoading={isLoading}
+          />
         </>
       )}
       {showPuzzle && (

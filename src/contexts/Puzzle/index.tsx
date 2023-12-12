@@ -45,40 +45,9 @@ export const PuzzleProvider = ({ children }: PuzzleProviderProps) => {
   };
 
   const fetchPuzzle = async (date: string) => {
-    // Check if in development mode
-    if (process.env.REACT_APP_DEV_MODE === 'true') {
-      // Hard-coded puzzle data for local development
-      const devPuzzle = {
-        id: 188,
-        groups: {
-          'MURKY CONDITION': {
-            level: 0,
-            members: ['CLOUD', 'FOG', 'HAZE', 'MIST']
-          },
-          FOLLOW: { level: 1, members: ['SHADOW', 'TAIL', 'TRACK', 'TRAIL'] },
-          'PINBALL MACHINE COMPONENTS': {
-            level: 2,
-            members: ['BALL', 'BUMPER', 'FLIPPER', 'PLUNGER']
-          },
-          '___LAND COUNTRIES': {
-            level: 3,
-            members: ['ICE', 'IRE', 'FIN', 'NETHER']
-          }
-        },
-        startingGroups: [
-          ['BALL', 'TAIL', 'CLOUD', 'FIN'],
-          ['SHADOW', 'ICE', 'FLIPPER', 'FOG'],
-          ['BUMPER', 'TRACK', 'HAZE', 'IRE'],
-          ['NETHER', 'PLUNGER', 'TRAIL', 'MIST']
-        ]
-      };
-      setPuzzle(devPuzzle);
-      return;
-    }
-
     try {
       const response = await fetch(
-        `https://raw.githubusercontent.com/k2db/only-kevnect/main/puzzles/${date}.json`
+        `https://raw.githubusercontent.com/k2bd/only-kevnect/main/puzzles/${date}.json`
       );
       const data = await response.json();
       setPuzzle(data);
