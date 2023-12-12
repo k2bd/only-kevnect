@@ -16,7 +16,7 @@ const PuzzleContainer = styled.div`
 `;
 
 const AppContent: React.FC = () => {
-  const { fetchPuzzle, completedGroups, puzzle, lives } = usePuzzle();
+  const { fetchPuzzle, completedGroups, puzzle, lives, error } = usePuzzle();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showPuzzle, setShowPuzzle] = useState<boolean>(false);
   const [isTimerActive, setIsTimerActive] = useState<boolean>(false);
@@ -73,6 +73,7 @@ const AppContent: React.FC = () => {
             onDateSelect={handleDateSelect}
             isLoading={isLoading}
           />
+          {error && <Instructions>{error}</Instructions>}
         </>
       )}
       {showPuzzle && (

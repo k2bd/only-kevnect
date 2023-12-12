@@ -12,6 +12,7 @@ import { Puzzle } from '../../type';
 
 interface PuzzleContextProps {
   puzzle?: Puzzle;
+  error: string | undefined;
   lives: number;
   completedGroups: string[];
   guesses: string[][];
@@ -21,6 +22,7 @@ interface PuzzleContextProps {
 
 const defaultState: PuzzleContextProps = {
   puzzle: undefined,
+  error: undefined,
   lives: 0,
   completedGroups: [],
   guesses: [],
@@ -39,20 +41,24 @@ export const PuzzleProvider = ({ children }: PuzzleProviderProps) => {
   const [completedGroups, setCompletedGroups] = useState<string[]>([]);
   const [guesses, setGuesses] = useState<string[][]>([]);
   const [lives, setLives] = useState(PUZZLE_LAST_GROUP_LIVES);
+  const [error, setError] = useState<string | undefined>();
 
   const loseLife = () => {
     setLives((prevLives) => prevLives - 1);
   };
 
   const fetchPuzzle = async (date: string) => {
+    setError(undefined);
     try {
       const response = await fetch(
         `https://raw.githubusercontent.com/k2bd/only-kevnect/main/puzzles/${date}.json`
       );
+      if (!response.ok) throw new Error('Failed to fetch puzzle');
       const data = await response.json();
       setPuzzle(data);
     } catch (error) {
       console.error('Failed to fetch puzzle', error);
+      setError(`Could not get puzzle ${date}. Please try again later.`);
     }
   };
 
@@ -107,6 +113,7 @@ export const PuzzleProvider = ({ children }: PuzzleProviderProps) => {
     <PuzzleContext.Provider
       value={{
         puzzle,
+        error,
         completedGroups,
         guesses,
         lives,

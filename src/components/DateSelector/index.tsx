@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { MINIMUM_SELECTABLE_DATE } from '../../constants';
+import { usePuzzle } from '../../contexts/Puzzle';
 import {
   DatePickerContainer,
   StyledButton,
@@ -20,6 +21,7 @@ const DateSelector: React.FC<DateSelectorProps> = ({
 }: DateSelectorProps) => {
   const today = new Date();
   const [highlightedDate, setHighlightedDate] = useState<Date | null>(null);
+  const { error } = usePuzzle();
 
   useEffect(() => {
     if (highlightedDate === null) {
@@ -45,7 +47,7 @@ const DateSelector: React.FC<DateSelectorProps> = ({
       />
       <StyledButton
         onClick={() => highlightedDate && onDateSelect(highlightedDate)}
-        disabled={isLoading || !highlightedDate}
+        disabled={isLoading || !highlightedDate || error !== undefined}
       >
         Start
       </StyledButton>
