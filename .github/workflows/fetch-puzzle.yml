@@ -2,7 +2,7 @@ name: Fetch Daily Puzzle
 
 on:
   schedule:
-    - cron: "1 0 * * *" # Runs every day at 1 minute past midnight UTC
+    - cron: "1/5 0 * * *" # Runs at 1 minute past midnight and every 5 minutes thereafter
   workflow_dispatch:
 
 jobs:
@@ -13,19 +13,36 @@ jobs:
       contents: write
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Install jq
+        run: sudo apt-get install jq
+
+      - name: Check if today's puzzle exists
+        id: check-file
+        run: |
+          TODAY=$(date +%Y-%m-%d)
+          FILE="puzzles/${TODAY}.json"
+          if [ -f "$FILE" ]; then
+            echo "Today's puzzle already exists."
+            echo "::set-output name=exists::true"
+          else
+            echo "::set-output name=exists::false"
+          fi
 
       - name: Fetch Puzzle Data
+        if: steps.check-file.outputs.exists == 'false'
         run: |
-          DATE=$(date +%Y-%m-%d)
-          curl -o puzzles/${DATE}.json https://www.nytimes.com/svc/connections/v1/${DATE}.json
-          echo "Puzzle content: $(cat puzzles/${DATE}.json)"
+          TODAY=$(date +%Y-%m-%d)
+          URL="https://www.nytimes.com/svc/connections/v1/${TODAY}.json"
+          RESPONSE=$(curl -s "$URL")
+          echo $RESPONSE | jq empty # This will fail the step if the JSON is invalid
+          echo $RESPONSE | jq -e '.id and .startingGroups' > /dev/null # Validate JSON content
+          echo "$RESPONSE" > "puzzles/${TODAY}.json"
 
       - name: Commit and Push
+        if: steps.check-file.outputs.exists == 'false'
         run: |
           git config --global user.name 'Your Name'
           git config --global user.email 'your-email@example.com'
           git add puzzles/
-          git commit -m "Update daily puzzle for ${DATE}"
+          git commit -m "Update daily puzzle for $(date +%Y-%m-%d)"
           git push
