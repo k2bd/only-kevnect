@@ -36,7 +36,7 @@ jobs:
           RESPONSE=$(curl -s "$URL")
           echo $RESPONSE | jq empty # This will fail the step if the JSON is invalid
           echo $RESPONSE | jq -e '.id and .startingGroups' > /dev/null # Validate JSON content
-          echo "$RESPONSE" > "puzzles/${TODAY}.json"
+          echo $RESPONSE > puzzles/${TODAY}.json
 
       - name: Commit and Push
         if: steps.check-file.outputs.exists == 'false'
