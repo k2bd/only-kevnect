@@ -2,7 +2,7 @@ name: Fetch Daily Puzzle
 
 on:
   schedule:
-    - cron: "1/5 0 * * *" # Runs at 1 minute past midnight and every 5 minutes thereafter
+    - cron: "*/5 0 * * *" # Runs at 1 minute past midnight and every 5 minutes thereafter
   workflow_dispatch:
 
 jobs:
@@ -36,6 +36,10 @@ jobs:
           RESPONSE=$(curl -s "$URL")
           echo $RESPONSE | jq empty # This will fail the step if the JSON is invalid
           echo $RESPONSE | jq -e '.id and .startingGroups' > /dev/null # Validate JSON content
+
+          pwd
+          ls -alh
+
           echo $RESPONSE > puzzles/${TODAY}.json
 
       - name: Commit and Push
