@@ -13,6 +13,9 @@ jobs:
       contents: write
 
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
       - name: Install jq
         run: sudo apt-get install jq
 
@@ -36,17 +39,13 @@ jobs:
           RESPONSE=$(curl -s "$URL")
           echo $RESPONSE | jq empty # This will fail the step if the JSON is invalid
           echo $RESPONSE | jq -e '.id and .startingGroups' > /dev/null # Validate JSON content
-
-          pwd
-          ls -alh
-
           echo $RESPONSE > puzzles/${TODAY}.json
 
       - name: Commit and Push
         if: steps.check-file.outputs.exists == 'false'
         run: |
-          git config --global user.name 'Your Name'
-          git config --global user.email 'your-email@example.com'
+          git config --global user.name 'Kevin Bot'
+          git config --global user.email 'kevinkelduff@gmail.com'
           git add puzzles/
           git commit -m "Update daily puzzle for $(date +%Y-%m-%d)"
           git push
